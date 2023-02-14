@@ -39,14 +39,16 @@ func GetUserByName(uname string) (user *model.User, err error) {
  * @Param
  * @return
  **/
-func GetUserById(uid int64) (user model.User, err error) {
+func GetUserById(userId uint) (user model.User, err error) {
+	//1.数据模型准备
 	user = model.User{}
-	err = dao.DB.Debug().First(&user, uid).Error
+	//2.在users表中查对应user_id的user
+	err = dao.DB.Model(&model.User{}).Where("id = ?", userId).Find(&user).Error
 	// 响应
-	if err != nil { // 未找到
+	if err != nil { // 找到
 		return user, err
 	}
-	return user, nil // 找到
+	return user, nil // 未找到
 
 }
 

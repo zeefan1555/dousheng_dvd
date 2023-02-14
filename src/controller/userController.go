@@ -53,14 +53,9 @@ func Register(c *gin.Context) {
 	}
 
 	//// 3. 查询用户是否已存在
-	//user, err := severice.GetUserByName(username)
+	//_, err := severice.GetUserByName(username)
 	//if err != nil {
 	//	c.JSON(http.StatusInternalServerError, gin.H{"status_code": 1, "status_msg": "查询用户失败"})
-	//	return
-	//}
-	//
-	//if user != nil {
-	//	c.JSON(http.StatusOK, gin.H{"status_code": 1, "status_msg": "用户已存在"})
 	//	return
 	//}
 
@@ -91,45 +86,6 @@ func Register(c *gin.Context) {
 	})
 }
 
-//func Register(c *gin.Context) {
-//	//1.参数提取
-//	username := c.Query("username")
-//	password := c.Query("password")
-//
-//	////3.查询用户是否在数据库
-//	//checkuser, err := severice.GetUserByName(username)
-//	//if checkuser != nil {
-//	//	c.JSON(http.StatusOK, UserLoginResponse{
-//	//		Response: common.Response{StatusCode: 1, StatusMsg: "User already exist"},
-//	//	})
-//	//	return
-//	//}
-//	//MD5加密
-//	//password = common.Md5Encrypt(password)
-//	//4.创建用户
-//	user := model.User{
-//		Name:     username,
-//		Password: password,
-//	}
-//
-//	err := severice.CreateUser(&user)
-//	if err != nil {
-//		c.JSON(http.StatusOK, UserLoginResponse{
-//			Response: common.Response{StatusCode: 1, StatusMsg: "Create user fail"},
-//		})
-//		return
-//	}
-//	//生成 token
-//	token, _ := middleware.CreateToken(user.ID, user.Name)
-//
-//	//5.返回对象
-//	c.JSON(http.StatusOK, UserLoginResponse{
-//		Response: common.Response{StatusCode: 0},
-//		UserId:   user.ID,
-//		Token:    token,
-//	})
-//}
-
 func Login(c *gin.Context) {
 	username := c.Query("username")
 	password := c.Query("password")
@@ -141,7 +97,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	//MD5加密
-	password = common.Md5Encrypt(password)
+	//password = common.Md5Encrypt(password)
 	//查询用户是否在数据库
 	user, err := severice.CheckUser(username, password)
 	if err != nil {
@@ -151,14 +107,17 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	//生成token
+	token, err := middleware.CreateToken(user.ID, user.Name)
 	c.JSON(http.StatusOK, UserLoginResponse{
 		Response: common.Response{StatusCode: 0},
 		UserId:   user.ID,
+		Token:    token,
 	})
 }
 
 func UserInfo(c *gin.Context) {
-	userid := c.MustGet("userid").(int64)
+	userid := c.MustGet("user_id").(uint)
 	user, err := severice.GetUserById(userid)
 	if err != nil {
 		c.JSON(http.StatusOK, UserLoginResponse{
@@ -167,7 +126,7 @@ func UserInfo(c *gin.Context) {
 		return
 	}
 	//清空密码
-	user.Password = ""
+	//user.Password = ""
 	c.JSON(http.StatusOK, UserResponse{
 		Response: common.Response{StatusCode: 0},
 		User:     user,

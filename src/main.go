@@ -13,6 +13,7 @@ func main() {
 		panic(err)
 	}
 	defer dao.Close()
+	dao.DB.Create(&model.User{})
 	dao.DB.AutoMigrate(&model.User{})
 
 	r := gin.Default()
