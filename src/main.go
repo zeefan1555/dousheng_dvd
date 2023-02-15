@@ -15,6 +15,7 @@ func main() {
 	defer dao.Close()
 	dao.DB.Create(&model.User{})
 	dao.DB.AutoMigrate(&model.User{})
+	dao.DB.AutoMigrate(&model.Video{})
 
 	r := gin.Default()
 	routes.InitRouter(r)

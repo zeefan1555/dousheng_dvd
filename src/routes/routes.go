@@ -14,12 +14,12 @@ func InitRouter(r *gin.Engine) {
 
 	// -----basic apis---基础接口
 	//feed
-	//apiRouter.GET("/feed/", controller.Feed)
+	apiRouter.GET("/feed/", controller.Feed)
 
 	//user路由组
 	apiRouter.GET("/user/", middleware.JwtMiddleware(), controller.UserInfo) //获取用户信息需要验证token
-	apiRouter.POST("/user/register/", controller.Register)                   //注册不需要验证, 需要颁发token
-	apiRouter.POST("/user/login/", controller.Login)                         //登录为什么不需要验证:因为登录的时候还没有token; 需要颁发token
+	apiRouter.POST("/user/register/", controller.Register)                   //需要颁发token
+	apiRouter.POST("/user/login/", controller.Login)                         //需要颁发token
 
 	////publish路由组
 	//apiRouter.POST("/publish/action/", controller.Publish)

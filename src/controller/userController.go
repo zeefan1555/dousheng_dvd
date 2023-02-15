@@ -4,7 +4,7 @@ import (
 	"dousheng_MVC/src/common"
 	"dousheng_MVC/src/middleware"
 	"dousheng_MVC/src/model"
-	"dousheng_MVC/src/service"
+	"dousheng_MVC/src/severice"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

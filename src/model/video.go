@@ -4,8 +4,8 @@ import "github.com/jinzhu/gorm"
 
 type Video struct {
 	gorm.Model
-	Id            int64  `json:"id,omitempty" gorm:"AUTO_INCREMENT" gorm:"primary_key"`
-	UserId        int64  `json:"user_id,omitempty"`
+	Id            int64  `json:"id,omitempty" gorm:"AUTO_INCREMENT;primary_key"`
+	UserId        int64  `json:"author,omitempty"`
 	PlayUrl       string `json:"play_url" json:"play_url,omitempty"`
 	CoverUrl      string `json:"cover_url,omitempty"`
 	FavoriteCount uint   `json:"favorite_count,omitempty"`
